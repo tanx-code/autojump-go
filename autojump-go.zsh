@@ -29,7 +29,7 @@ chpwd_functions+=autojump_chpwd
 
 
 j() {
-    if [[ ${1} == -* ]] && [[ ${1} != "--" ]]; then
+    if [[ ${1} == -* || ${1} == $HOME* || ${1} == /* || ${1} == ..* ]]; then
         cd ${@}
         return
     fi

@@ -125,6 +125,7 @@ func Match(input string, data *Data) string {
 		maxNum = 10
 	}
 	for _, match := range matches[:maxNum] {
+		fmt.Print(match.Str + "\n")
 		weight := data.value[match.Str]
 		if weight > maxWeights {
 			maxWeights = weight
