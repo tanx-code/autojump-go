@@ -1,8 +1,8 @@
 # autojump-go
 
 [![Build Status](https://travis-ci.org/tvytlx/autojump-go.svg?branch=master)](https://travis-ci.org/tvytlx/autojump-go)
-[![Coverage Status](https://coveralls.io/repos/github/tvytlx/autojump-go/badge.svg)](https://coveralls.io/github/tvytlx/autojump-go)
-[![Go Report Card](https://goreportcard.com/badge/github.com/mozillazg/go-pinyin)](https://goreportcard.com/report/github.com/tvytlx/autojump-go)
+[![Coverage Status](https://coveralls.io/repos/github/tvytlx/autojump-go/badge.svg?branch=master)](https://coveralls.io/github/tvytlx/autojump-go?branch=master)
+[![Go Report Card](https://goreportcard.com/badge/github.com/tvytlx/autojump-go)](https://goreportcard.com/report/github.com/tvytlx/autojump-go)
 
 [autojump](https://github.com/wting/autojump) golang implementation. (Not Fully Implemented)
 
