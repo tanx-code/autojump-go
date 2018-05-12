@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"io/ioutil"
 	"math"
 	"os"
 	"strconv"
@@ -28,26 +29,29 @@ var dataPath string
 type Data struct {
 	value map[string]float64
 	fp    *os.File
+	path  string
 }
 
-// Load value from file
-func (d *Data) Load(dataPath string) {
+func openFile(dataPath string) *os.File {
 	var _, err = os.Stat(dataPath)
 
 	if os.IsNotExist(err) {
 		var f, err = os.Create(dataPath)
 		if err != nil {
-			return
+			panic(nil)
 		}
-		d.fp = f
-	} else {
-		f, err := os.OpenFile(dataPath, os.O_RDWR, 0644)
-		if err != nil {
-			return
-		}
-		d.fp = f
+		return f
 	}
+	f, err := os.OpenFile(dataPath, os.O_RDWR, 0644)
+	if err != nil {
+		panic(nil)
+	}
+	return f
+}
 
+// Load value from file
+func (d *Data) Load(dataPath string) {
+	d.fp = openFile(dataPath)
 	var b = new(bytes.Buffer)
 	b.ReadFrom(d.fp)
 	lines := strings.Split(b.String(), "\n")
@@ -56,19 +60,20 @@ func (d *Data) Load(dataPath string) {
 		weight, _ := strconv.ParseFloat(s[0], 64)
 		d.value[s[1]] = weight
 	}
+	d.path = dataPath
 }
 
 // Close and save the data file
 func (d *Data) Close() {
-	defer d.fp.Close()
+	d.fp.Close()
 
 	// write
-	d.fp.Truncate(0)
+	content := ""
 	for k, v := range d.value {
-		d.fp.WriteString(fmt.Sprintf("%.3f,%s\n", v, k))
+		content += fmt.Sprintf("%.3f,%s\n", v, k)
 	}
 
-	if err := d.fp.Sync(); err != nil {
+	if err := ioutil.WriteFile(d.path, []byte(content), 0644); err != nil {
 		panic(err)
 	}
 }
