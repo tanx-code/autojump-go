@@ -38,13 +38,13 @@ func openFile(dataPath string) *os.File {
 	if os.IsNotExist(err) {
 		var f, err = os.Create(dataPath)
 		if err != nil {
-			panic(nil)
+			panic(err)
 		}
 		return f
 	}
 	f, err := os.OpenFile(dataPath, os.O_RDWR, 0644)
 	if err != nil {
-		panic(nil)
+		panic(err)
 	}
 	return f
 }
