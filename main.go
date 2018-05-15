@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"math"
 	"os"
 	"strconv"
@@ -22,7 +21,6 @@ optional arguments:
   --help            show this help message and exit
   --add DIRECTORY
 `
-var logger = log.New(os.Stdout, "autojump-go: ", log.Lshortfile)
 var dataPath string
 
 // Data stores data file

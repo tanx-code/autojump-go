@@ -14,7 +14,6 @@ func MatchLast(needle *string, paths *[]string) (ret []string) {
 		}
 	}
 
-	logger.Print(ret)
 	return ret
 }
 
@@ -25,7 +24,6 @@ func MatchFuzzy(needle *string, paths *[]string) (ret []string) {
 		ret = append(ret, v.Str)
 	}
 
-	logger.Print(ret)
 	return ret
 }
 
@@ -37,6 +35,5 @@ func MatchAnyway(needle *string, paths *[]string) (ret []string) {
 		}
 	}
 
-	logger.Print(ret)
 	return ret
 }
