@@ -4,12 +4,11 @@ import (
 	"bytes"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"math"
 	"os"
 	"strconv"
 	"strings"
-
-	"github.com/sahilm/fuzzy"
 )
 
 var help = `Automatically jump to directory passed as an argument.
@@ -23,6 +22,7 @@ optional arguments:
   --help            show this help message and exit
   --add DIRECTORY
 `
+var logger = log.New(os.Stdout, "autojump-go: ", log.Lshortfile)
 var dataPath string
 
 // Data stores data file
@@ -99,40 +99,28 @@ func (d *Data) GetPaths() (paths []string) {
 	return paths
 }
 
-// GetWeights return all the weights in data file with the same order
-func (d *Data) GetWeights() (weights []float64) {
-	for _, weight := range d.value {
-		weights = append(weights, weight)
-	}
-
-	return weights
-}
-
 // Match the most possible path from input
 func Match(input string, data *Data) string {
-	paths := []string{}
-	for path := range data.value {
-		paths = append(paths, path)
-	}
+	candidate := map[string]bool{}
+	paths := data.GetPaths()
 
-	matches := fuzzy.Find(input, paths)
-	bestChoice := "."
-	maxWeights := float64(0)
-
-	// no more than 10 candidate matches
-	var maxNum int
-	if maxNum = len(matches); maxNum > 10 {
-		maxNum = 10
-	}
-	for _, match := range matches[:maxNum] {
-		weight := data.value[match.Str]
-		if weight > maxWeights {
-			maxWeights = weight
-			bestChoice = match.Str
+	for _, fn := range []interface{}{MatchAnyway, MatchFuzzy, MatchLast} {
+		for _, path := range fn.(func(*string, *[]string) []string)(&input, &paths) {
+			candidate[path] = true
 		}
 	}
 
-	return bestChoice
+	best := "."
+	maxWeight := float64(0)
+	for p := range candidate {
+		cw := data.value[p]
+		if cw > maxWeight {
+			maxWeight = cw
+			best = p
+		}
+	}
+
+	return best
 }
 
 func handle(flag, path string) string {

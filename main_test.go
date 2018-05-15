@@ -4,8 +4,6 @@ import (
 	"io/ioutil"
 	"reflect"
 	"testing"
-
-	"github.com/sahilm/fuzzy"
 )
 
 const testDataPath = "test_autojump.txt"
@@ -15,6 +13,7 @@ const testDataContent = `10.000,/Users/xiaotan/Toy/pdfminer/pdfminer
 10.000,/Users/xiaotan/.local/venvs
 22.361,/Users/xiaotan/Work/slate
 14.142,/Users/xiaotan/Toy/tx/elasticsearch-py
+10.000,/Users/ycm/test
 `
 
 func setupTestCase(t *testing.T) {
@@ -55,13 +54,6 @@ func TestMatch(t *testing.T) {
 	d.Load(testDataPath)
 
 	Assert("/Users/xiaotan/Work/slate", Match("Work", &d), t)
-	Assert("/Users/xiaotan/.vim/plugged/YouCompleteMe/python/ycm", Match("youme", &d), t)
+	Assert("/Users/xiaotan/.vim/plugged/YouCompleteMe/python/ycm", Match("ycm", &d), t)
 	d.Close()
-}
-
-func TestFuzzy(t *testing.T) {
-	input := "api"
-	paths := []string{"work/bar-api/bar.go", "toy/toy.go", "foo.go"}
-	v := fuzzy.Find(input, paths)[0].Str
-	Assert(v, "work/bar-api/bar.go", t)
 }
