@@ -29,26 +29,28 @@ chpwd_functions+=autojump_chpwd
 
 
 j() {
-    if [[ ${1} == -* || ${1} == $HOME* || ${1} == /* || ${1} == ..* ]]; then
+    if [[ ${1} == - || ${1} == $HOME* || ${1} == /* || ${1} == ..* ]]; then
         cd ${@}
         return
     fi
 
     setopt localoptions noautonamedirs
-    local output="$(autojump-go ${@})"
-    if [[ -d "${output}" ]]; then
-        if [ -t 1 ]; then  # if stdout is a terminal, use colors
-                echo -e "\\033[31m${output}\\033[0m"
-        else
-                echo -e "${output}"
+    if [[ ${1} != --* ]]; then
+        local output="$(autojump-go ${@})"
+        if  [[ -d "${output}" ]]; then
+            if [ -t 1 ]; then  # if stdout is a terminal, use colors
+                    echo -e "\\033[31m${output}\\033[0m"
+            else
+                    echo -e "${output}"
+            fi
+            cd "${output}"
         fi
-        cd "${output}"
-    else
-        echo "autojump-go: directory '${@}' not found"
-        echo "\n${output}\n"
-        echo "Try \`autojump-go --help\` for more information."
-        false
+        return
     fi
+    echo "autojump-go: directory '${@}' not found"
+    echo "\n"
+    echo "Try \`autojump-go --help\` for more information."
+    false
 }
 
 
