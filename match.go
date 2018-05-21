@@ -30,7 +30,8 @@ func MatchFuzzy(needle *string, paths *[]string) (ret []string) {
 // MatchAnyway if needle is a substring of a path, return that path.
 func MatchAnyway(needle *string, paths *[]string) (ret []string) {
 	for _, path := range *paths {
-		if strings.Contains(path, *needle) {
+		lowPath := strings.ToLower(path)
+		if strings.Contains(lowPath, *needle) {
 			ret = append(ret, path)
 		}
 	}

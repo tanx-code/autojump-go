@@ -99,22 +99,35 @@ func (d *Data) GetPaths() (paths []string) {
 
 // Match the most possible path from input
 func Match(input string, data *Data) string {
-	candidate := map[string]bool{}
 	paths := data.GetPaths()
+	best := "."
 
-	for _, fn := range []interface{}{MatchAnyway, MatchFuzzy, MatchLast} {
+	for _, fn := range []interface{}{MatchLast, MatchAnyway, MatchFuzzy} {
+		candidate := map[string]bool{}
+
 		for _, path := range fn.(func(*string, *[]string) []string)(&input, &paths) {
 			candidate[path] = true
 		}
+
+		maxWeight := float64(0)
+		for p := range candidate {
+			cw := data.value[p]
+			if cw > maxWeight {
+				maxWeight = cw
+				best = p
+			}
+		}
+
+		if best != "." {
+			break
+		}
 	}
 
-	best := "."
-	maxWeight := float64(0)
-	for p := range candidate {
-		cw := data.value[p]
-		if cw > maxWeight {
-			maxWeight = cw
-			best = p
+	if best != "." {
+		if _, err := os.Stat(best); os.IsNotExist(err) {
+			fmt.Print(best)
+			delete(data.value, best)
+			return Match(input, data)
 		}
 	}
 
