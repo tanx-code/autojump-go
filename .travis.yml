@@ -17,4 +17,3 @@ script:
   - go build github.com/tanx-code/autojump-go
   - go test -v -covermode=count -coverprofile=coverage.out
   - $HOME/gopath/bin/goveralls -coverprofile=coverage.out -service=travis-ci
-

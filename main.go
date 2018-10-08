@@ -123,14 +123,6 @@ func Match(input string, data *Data) string {
 		}
 	}
 
-	if best != "." {
-		if _, err := os.Stat(best); os.IsNotExist(err) {
-			fmt.Print(best)
-			delete(data.value, best)
-			return Match(input, data)
-		}
-	}
-
 	return best
 }
 
@@ -146,7 +138,15 @@ func handle(flag, path string) string {
 		d.Add(path)
 
 	case "":
-		return Match(path, &d)
+		hit := Match(path, &d)
+		for hit != "." {
+			if _, err := os.Stat(hit); os.IsNotExist(err) {
+				delete(d.value, hit)
+				hit = Match(path, &d)
+				continue
+			}
+			return hit
+		}
 
 	default:
 		panic("args flag error")
