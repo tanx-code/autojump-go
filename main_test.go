@@ -52,8 +52,7 @@ func TestMatch(t *testing.T) {
 	setupTestCase(t)
 	d := Data{value: make(map[string]float64)}
 	d.Load(testDataPath)
-
-	Assert("/Users/xiaotan/Work/slate", Match("Work", &d), t)
-	Assert("/Users/xiaotan/.vim/plugged/YouCompleteMe/python/ycm", Match("ycm", &d), t)
+	Assert(Match("Work", &d), "/Users/xiaotan/Work/slate", t)
+	Assert(Match("ycm", &d), "/Users/xiaotan/.vim/plugged/YouCompleteMe/python/ycm", t)
 	d.Close()
 }
