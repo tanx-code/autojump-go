@@ -1,8 +1,12 @@
 language: go
-go:
-  - '1.10'
 
-sudo: false
+go:
+  - '1.10.x'
+
+os:
+  - osx
+
+sudo: true
 
 before_install:
   - go get golang.org/x/tools/cmd/cover
