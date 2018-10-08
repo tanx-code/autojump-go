@@ -14,7 +14,7 @@ before_install:
   - go get github.com/sahilm/fuzzy
 
 script:
-  - go build github.com/tvytlx/autojump-go
+  - go build github.com/tanx-code/autojump-go
   - go test -v -covermode=count -coverprofile=coverage.out
   - $HOME/gopath/bin/goveralls -coverprofile=coverage.out -service=travis-ci
 
