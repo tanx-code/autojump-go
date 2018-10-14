@@ -26,9 +26,9 @@ Feels like just typed the shell command `cd`.
 If you use zsh and has golang environment prepared, you can run these commands to install `autojump-go`.
 
 ```
-go get -u github.com/tvytlx/autojump-go
+go get -u github.com/tanx-code/autojump-go
 
-echo "source $GOPATH/src/github.com/tvytlx/autojump-go/autojump-go.zsh" >> ~/.zshrc
+echo "source $GOPATH/src/github.com/tanx-code/autojump-go/autojump-go.zsh" >> ~/.zshrc
 ```
 
 ## TODO
