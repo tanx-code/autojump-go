@@ -31,9 +31,7 @@ type Data struct {
 }
 
 func openFile(dataPath string) *os.File {
-	var _, err = os.Stat(dataPath)
-
-	if os.IsNotExist(err) {
+	if _, err := os.Stat(dataPath); os.IsNotExist(err) {
 		var f, err = os.Create(dataPath)
 		if err != nil {
 			panic(err)
